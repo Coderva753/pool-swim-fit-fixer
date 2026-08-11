@@ -38,6 +38,8 @@ jobs:
 
       - name: Build application
         run: pnpm build
+        env:
+          VITE_CLOUDFLARE_WEB_ANALYTICS_TOKEN: ${{ vars.CLOUDFLARE_WEB_ANALYTICS_TOKEN }}
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6

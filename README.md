@@ -1,32 +1,6 @@
 # PoolFix — Garmin Pool Swim FIT File Fixer
 
-Fix incorrect Garmin pool-swim distance by merging accidentally split lengths. Edit and repair your Garmin swim FIT file locally in the browser — nothing is uploaded.
-
-## ▶ [Try PoolFix online — your FIT file stays in your browser](https://coderva753.github.io/pool-swim-fit-fixer/?lang=en)
-
-[English app](https://coderva753.github.io/pool-swim-fit-fixer/?lang=en) · [Русская версия](https://coderva753.github.io/pool-swim-fit-fixer/?lang=ru)
-
 [English](#english) · [Русский](#русский)
-
-## How it works / Как это работает
-
-### 1. Find suspicious split lengths / Найдите подозрительные отрезки
-
-PoolFix highlights unusually short adjacent lengths that may be one pool length recorded as two. / PoolFix отмечает соседние короткие отрезки, которые могли быть одной ошибочно разбитой дорожкой.
-
-![PoolFix highlights suspicious short Garmin pool-swim lengths](docs/screenshots/01-find-suspicious-lengths.png)
-
-### 2. Select and merge / Выберите и объедините
-
-Select the adjacent parts, verify the preview, and click **Merge**. / Выберите соседние части, проверьте предварительный результат и нажмите **«Объединить»**.
-
-![Selecting two split lengths and merging them in PoolFix](docs/screenshots/02-select-and-merge.png)
-
-### 3. Verify and download / Проверьте и скачайте
-
-Confirm the corrected distance, then download the repaired FIT file for Garmin Connect. / Проверьте исправленную дистанцию и скачайте готовый FIT-файл для Garmin Connect.
-
-![Corrected Garmin pool-swim distance after merging split lengths](docs/screenshots/03-verify-result.png)
 
 ## English
 
@@ -43,6 +17,26 @@ The original file is never overwritten. The repaired file receives the `_fixed.f
 
 All processing happens locally in the browser's memory. The FIT file is not uploaded anywhere, and no installation, server, or runtime is required to use the built application.
 
+### How it works
+
+#### 1. Find suspicious split lengths
+
+PoolFix highlights unusually short adjacent lengths that may be one pool length recorded as two.
+
+![PoolFix highlights suspicious short Garmin pool-swim lengths](docs/screenshots/01-find-suspicious-lengths.png)
+
+#### 2. Select and merge
+
+Select the adjacent parts, verify the preview, and click **Merge**.
+
+![Selecting two split lengths and merging them in PoolFix](docs/screenshots/02-select-and-merge.png)
+
+#### 3. Verify and download
+
+Confirm the corrected distance, then download the repaired FIT file for Garmin Connect.
+
+![Corrected Garmin pool-swim distance after merging split lengths](docs/screenshots/03-verify-result.png)
+
 ### Development
 
 ```text
@@ -52,9 +46,11 @@ pnpm build
 
 The FIT-processing logic is in `src/fit.ts`. The interface is implemented in `src/main.ts` and `src/styles.css`.
 
+To enable optional Cloudflare Web Analytics for the deployed site, create the repository Actions variable `CLOUDFLARE_WEB_ANALYTICS_TOKEN` and set it to the Web Analytics site token issued by Cloudflare. Analytics is omitted from the build when the variable is empty. It records site visits only; FIT-file processing remains local in the browser.
+
 ## Русский
 
-PoolFix — локальное браузерное приложение для исправления тренировок в бассейне, в которых одна дорожка была ошибочно разбита на две или несколько.
+Используйте PoolFix, если Garmin неправильно определил дистанцию тренировки в бассейне, добавил лишнюю дорожку или записал одну дорожку как две. Перед импортом исправленного FIT-файла в Garmin Connect приложение проверяет его с помощью официального Garmin FIT SDK.
 
 ### Использование
 
@@ -67,6 +63,26 @@ PoolFix — локальное браузерное приложение для 
 
 Вся обработка происходит локально в памяти браузера. FIT-файл никуда не загружается, а для использования собранного приложения не нужны установка, сервер или среда выполнения.
 
+### Как это работает
+
+#### 1. Найдите подозрительные отрезки
+
+PoolFix отмечает соседние короткие отрезки, которые могли быть одной ошибочно разбитой дорожкой.
+
+![PoolFix отмечает подозрительные короткие отрезки тренировки Garmin в бассейне](docs/screenshots/01-find-suspicious-lengths.png)
+
+#### 2. Выберите и объедините
+
+Выберите соседние части, проверьте предварительный результат и нажмите **«Объединить»**.
+
+![Выбор и объединение двух частей ошибочно разбитой дорожки в PoolFix](docs/screenshots/02-select-and-merge.png)
+
+#### 3. Проверьте и скачайте
+
+Убедитесь, что дистанция исправлена, а затем скачайте готовый FIT-файл для Garmin Connect.
+
+![Исправленная дистанция тренировки Garmin после объединения отрезков](docs/screenshots/03-verify-result.png)
+
 ### Разработка
 
 ```text
@@ -75,3 +91,5 @@ pnpm build
 ```
 
 Основная логика обработки FIT находится в `src/fit.ts`, интерфейс — в `src/main.ts` и `src/styles.css`.
+
+Чтобы включить необязательную Cloudflare Web Analytics на опубликованном сайте, создайте переменную Actions репозитория `CLOUDFLARE_WEB_ANALYTICS_TOKEN` и укажите в ней токен сайта Web Analytics, выданный Cloudflare. Если переменная пуста, аналитика не включается в сборку. Она учитывает только посещения сайта; обработка FIT-файлов по-прежнему происходит локально в браузере.

@@ -1,4 +1,5 @@
 import "./styles.css";
+import { initializeAnalytics } from "./analytics";
 import { initializeLanguage, localizeCoreMessage, t, type TranslationKey } from "./i18n";
 import {
   buildSwimView,
@@ -13,6 +14,8 @@ import {
   type SwimLengthRow,
   type SwimView,
 } from "./fit";
+
+initializeAnalytics();
 
 const elements = {
   emptyState: document.querySelector<HTMLElement>("#emptyState")!,
