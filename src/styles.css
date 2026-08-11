@@ -65,7 +65,13 @@ button { color: inherit; }
 .brand-mark i:nth-child(3) { margin-left: 9px; }
 
 .privacy-note { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 8px; }
-.privacy-note span { width: 8px; height: 8px; border-radius: 50%; background: var(--aqua); box-shadow: 0 0 0 4px rgba(49,214,191,.14); }
+.privacy-note > span:first-child { flex: 0 0 auto; width: 8px; height: 8px; border-radius: 50%; background: var(--aqua); box-shadow: 0 0 0 4px rgba(49,214,191,.14); }
+.topbar-actions { display: flex; align-items: center; gap: 18px; }
+.language-switch { display: inline-flex; padding: 3px; border: 1px solid #d5e3e5; border-radius: 10px; background: rgba(255,255,255,.7); }
+.language-switch button { width: 38px; height: 30px; padding: 0; border: 0; border-radius: 7px; background: transparent; color: #718690; font-size: 11px; font-weight: 800; cursor: pointer; transition: color .15s, background .15s, box-shadow .15s; }
+.language-switch button:hover { color: var(--aqua-dark); }
+.language-switch button[aria-pressed="true"] { background: var(--navy); color: #fff; box-shadow: 0 3px 9px rgba(7,26,43,.16); }
+.language-switch button:focus-visible { outline: 2px solid var(--aqua-dark); outline-offset: 2px; }
 
 main { flex: 1; }
 .hero {
@@ -189,6 +195,7 @@ footer { width: min(1280px, calc(100% - 48px)); margin: 0 auto; padding: 19px 0 
   .topbar, .hero, .workspace, footer { width: min(100% - 28px, 1280px); }
   .topbar { height: 66px; }
   .privacy-note { display: none; }
+  .topbar-actions { gap: 0; }
   .hero { min-height: auto; padding: 60px 0 90px; }
   .hero h1 { font-size: 39px; letter-spacing: -2px; }
   .lead { font-size: 16px; }

@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#071a2b" />
-    <title>PoolFix — исправление плавательных FIT-файлов</title>
+    <title>PoolFix — repair incorrectly split pool lengths</title>
   </head>
   <body>
     <div class="app-shell">
@@ -13,42 +13,48 @@
           <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
           <span>PoolFix</span>
         </a>
-        <div class="privacy-note"><span></span> Работает локально · данные никуда не отправляются</div>
+        <div class="topbar-actions">
+          <div class="privacy-note"><span></span><span data-i18n="privacy">Runs locally · your data never leaves the browser</span></div>
+          <div id="languageSwitch" class="language-switch" role="group" aria-label="Language">
+            <button id="langEnButton" type="button" aria-pressed="true">EN</button>
+            <button id="langRuButton" type="button" aria-pressed="false">RU</button>
+          </div>
+        </div>
       </header>
 
       <main>
         <section id="emptyState" class="hero">
           <div class="hero-copy">
             <p class="eyebrow">GARMIN POOL SWIM</p>
-            <h1>Верните потерянный<br /><em>разворот</em> на место</h1>
-            <p class="lead">Откройте тренировку, объедините ошибочно разбитые отрезки и скачайте исправленный FIT-файл.</p>
+            <h1 data-i18n-html="heroTitle">Put the lost<br /><em>turn</em> back in place</h1>
+            <p class="lead" data-i18n="heroLead">Open a pool-swim activity, merge incorrectly split lengths, and download the repaired FIT file.</p>
             <div class="hero-points">
-              <span>Без регистрации</span><span>Без загрузки в облако</span><span>Исходник не меняется</span>
+              <span data-i18n="pointNoRegistration">No sign-up</span><span data-i18n="pointNoCloud">No cloud upload</span><span data-i18n="pointSourceUnchanged">Original file stays unchanged</span>
             </div>
           </div>
           <button id="dropZone" class="drop-zone" type="button">
             <span class="drop-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V14"/></svg>
             </span>
-            <strong>Перетащите FIT-файл</strong>
-            <span>или нажмите, чтобы выбрать</span>
-            <small>Поддерживаются тренировки Lap Swimming</small>
+            <strong data-i18n="dropTitle">Drop your FIT file here</strong>
+            <span data-i18n="dropHint">or click to choose a file</span>
+            <small data-i18n="dropSupport">Pool Swimming activities are supported</small>
           </button>
         </section>
 
         <section id="workspace" class="workspace" hidden>
           <div class="workspace-heading">
             <div>
-              <button id="openAnotherButton" class="back-button" type="button">← Другой файл</button>
-              <p class="eyebrow">ТЕКУЩАЯ ТРЕНИРОВКА</p>
-              <h1 id="fileName">Тренировка.fit</h1>
+              <button id="openAnotherButton" class="back-button" type="button">← <span data-i18n="otherFile">Another file</span></button>
+              <p class="eyebrow" data-i18n="currentWorkout">CURRENT ACTIVITY</p>
+              <h1 id="fileName" data-i18n="defaultFileName">Activity.fit</h1>
             </div>
             <div class="workspace-actions">
               <button id="undoButton" class="button secondary" type="button" disabled>
-                <span aria-hidden="true">↶</span> Отменить
+                <span aria-hidden="true">↶</span> <span data-i18n="undo">Undo</span>
               </button>
               <button id="exportButton" class="button primary" type="button">
-                Скачать исправленный FIT
+                <span data-i18n="download">Download repaired FIT</span>
               </button>
             </div>
           </div>
@@ -58,18 +64,18 @@
           <div class="editor-card">
             <div class="editor-head">
               <div>
-                <h2>Отрезки тренировки</h2>
-                <p>Выберите соседние ошибочные части внутри одного интервала.</p>
+                <h2 data-i18n="editorTitle">Activity lengths</h2>
+                <p data-i18n="editorLead">Select adjacent incorrect parts within the same interval.</p>
               </div>
-              <button id="findSuspiciousButton" class="button ghost" type="button">Найти подозрительные</button>
+              <button id="findSuspiciousButton" class="button ghost" type="button" data-i18n="findSuspicious">Find suspicious lengths</button>
             </div>
 
             <div id="selectionBar" class="selection-bar" aria-live="polite">
               <div>
-                <strong id="selectionTitle">Выберите минимум два отрезка</strong>
-                <span id="selectionDetails">Они должны идти подряд внутри одного интервала</span>
+                <strong id="selectionTitle" data-i18n="selectAtLeastTwo">Select at least two lengths</strong>
+                <span id="selectionDetails" data-i18n="adjacentSameInterval">They must be adjacent within the same interval</span>
               </div>
-              <button id="mergeButton" class="button merge" type="button" disabled>Объединить</button>
+              <button id="mergeButton" class="button merge" type="button" disabled data-i18n="merge">Merge</button>
             </div>
 
             <div class="table-scroll">
@@ -77,11 +83,11 @@
                 <thead>
                   <tr>
                     <th class="check-column"></th>
-                    <th>Отрезок</th>
-                    <th>Стиль</th>
-                    <th>Время</th>
-                    <th>Темп / 100 м</th>
-                    <th>Гребки</th>
+                    <th data-i18n="columnLength">Length</th>
+                    <th data-i18n="columnStroke">Stroke</th>
+                    <th data-i18n="columnTime">Time</th>
+                    <th data-i18n="columnPace">Pace / 100 m</th>
+                    <th data-i18n="columnStrokes">Strokes</th>
                     <th>SWOLF</th>
                     <th></th>
                   </tr>
@@ -93,7 +99,7 @@
         </section>
       </main>
 
-      <footer>PoolFix использует официальный Garmin FIT SDK для чтения, записи и проверки CRC.</footer>
+      <footer data-i18n="footer">PoolFix uses the official Garmin FIT SDK to read, write, and validate CRC.</footer>
     </div>
 
     <input id="fileInput" type="file" accept=".fit,application/octet-stream" hidden />

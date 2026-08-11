@@ -1,4 +1,5 @@
 import "./styles.css";
+import { initializeLanguage, localizeCoreMessage, t, type TranslationKey } from "./i18n";
 import {
   buildSwimView,
   cloneMessages,
@@ -76,16 +77,17 @@ function formatPace(row: SwimLengthRow, poolLength: number): string {
 }
 
 function translateStroke(stroke: string): string {
-  const names: Record<string, string> = {
-    freestyle: "Кроль",
-    backstroke: "На спине",
-    breaststroke: "Брасс",
-    butterfly: "Баттерфляй",
-    drill: "Упражнение",
-    mixed: "Смешанный",
-    unknown: "Не определён",
+  const names: Record<string, TranslationKey> = {
+    freestyle: "strokeFreestyle",
+    backstroke: "strokeBackstroke",
+    breaststroke: "strokeBreaststroke",
+    butterfly: "strokeButterfly",
+    drill: "strokeDrill",
+    mixed: "strokeMixed",
+    unknown: "strokeUnknown",
   };
-  return names[stroke] ?? stroke;
+  const key = names[stroke];
+  return key ? t(key) : stroke;
 }
 
 function showToast(message: string, error = false): void {
@@ -98,13 +100,14 @@ function showToast(message: string, error = false): void {
 
 function renderSummary(view: SwimView): void {
   const activeCount = view.lengths.filter((length) => length.lengthType !== "idle").length;
-  const sourceStatus = fitDocument?.sourceIntegrity ? "CRC корректен" : "Есть проблема с CRC";
+  const sourceStatus = fitDocument?.sourceIntegrity ? t("crcOk") : t("crcProblem");
+  const poolUnit = view.poolUnit === "ярд" ? t("yards") : t("meters");
   elements.summaryCards.innerHTML = `
-    <div class="summary-card"><span>Дистанция</span><strong>${numberValue(view.session, "totalDistance")} <small>м</small></strong></div>
-    <div class="summary-card"><span>Активные отрезки</span><strong>${activeCount}</strong></div>
-    <div class="summary-card"><span>Время таймера</span><strong>${formatLongDuration(numberValue(view.session, "totalTimerTime"))}</strong></div>
-    <div class="summary-card"><span>Бассейн</span><strong>${view.poolLength} <small>${escapeHtml(view.poolUnit)}</small></strong></div>
-    <div class="summary-card integrity"><span>Исходный файл</span><strong>${sourceStatus}</strong></div>
+    <div class="summary-card"><span>${t("summaryDistance")}</span><strong>${numberValue(view.session, "totalDistance")} <small>${t("meters")}</small></strong></div>
+    <div class="summary-card"><span>${t("summaryActiveLengths")}</span><strong>${activeCount}</strong></div>
+    <div class="summary-card"><span>${t("summaryTimerTime")}</span><strong>${formatLongDuration(numberValue(view.session, "totalTimerTime"))}</strong></div>
+    <div class="summary-card"><span>${t("summaryPool")}</span><strong>${view.poolLength} <small>${poolUnit}</small></strong></div>
+    <div class="summary-card integrity"><span>${t("summarySourceFile")}</span><strong>${sourceStatus}</strong></div>
   `;
 }
 
@@ -112,12 +115,12 @@ function rowHtml(row: SwimLengthRow, groupLapNumber: number | null, poolLength: 
   const selected = selectedIds.has(row.id);
   const swolf = row.type === "active" && row.strokes > 0 ? Math.round(row.time + row.strokes) : null;
   const rowLabel = row.type === "idle"
-    ? "Отдых"
+    ? t("rest")
     : `${groupLapNumber}.${row.positionInLap + 1}`;
   return `
     <tr class="length-row ${row.type} ${selected ? "selected" : ""} ${row.suspicious ? "suspicious" : ""}" data-row-id="${row.id}">
       <td class="check-column">${row.type === "active"
-        ? `<input type="checkbox" aria-label="Выбрать отрезок ${rowLabel}" ${selected ? "checked" : ""} />`
+        ? `<input type="checkbox" aria-label="${escapeHtml(t("selectLength", { label: rowLabel }))}" ${selected ? "checked" : ""} />`
         : ""}</td>
       <td><span class="row-number">${rowLabel}</span></td>
       <td>${row.type === "active" ? `<span class="stroke-pill">${escapeHtml(translateStroke(row.stroke))}</span>` : "—"}</td>
@@ -125,7 +128,7 @@ function rowHtml(row: SwimLengthRow, groupLapNumber: number | null, poolLength: 
       <td class="pace">${formatPace(row, poolLength)}</td>
       <td>${row.type === "active" && row.strokes > 0 ? row.strokes : "—"}</td>
       <td>${swolf ?? "—"}</td>
-      <td>${row.suspicious ? '<span class="warning-tag">короткий</span>' : ""}</td>
+      <td>${row.suspicious ? `<span class="warning-tag">${t("shortTag")}</span>` : ""}</td>
     </tr>`;
 }
 
@@ -133,10 +136,11 @@ function renderRows(view: SwimView): void {
   elements.lengthRows.innerHTML = view.groups.map((group) => {
     const totalTime = group.rows.reduce((total, row) => total + row.time, 0);
     const groupInfo = group.active
-      ? `${group.rows.length} отр. · ${group.rows.length * view.poolLength} м · ${formatDuration(totalTime)}`
+      ? `${group.rows.length} ${t("lengthsAbbr")} · ${group.rows.length * view.poolLength} ${t("meters")} · ${formatDuration(totalTime)}`
       : formatDuration(totalTime);
+    const groupLabel = group.active ? `${t("interval")} ${group.lapNumber}` : t("rest");
     return `
-      <tr class="group-row"><td colspan="8">${group.label}<span>${groupInfo}</span></td></tr>
+      <tr class="group-row"><td colspan="8">${groupLabel}<span>${groupInfo}</span></td></tr>
       ${group.rows.map((row) => rowHtml(row, group.lapNumber, view.poolLength)).join("")}
     `;
   }).join("");
@@ -160,14 +164,21 @@ function renderSelection(view: SwimView): void {
   elements.mergeButton.disabled = !preview.valid;
 
   if (preview.valid) {
-    elements.selectionTitle.textContent = `${preview.selected.length} отрезка станут одним`;
-    elements.selectionDetails.textContent = `${preview.oldDistance} → ${preview.newDistance} м · ${formatDuration(preview.newTime)} · дистанция −${preview.removedDistance} м`;
+    elements.selectionTitle.textContent = t("selectionWillMerge", { count: preview.selected.length });
+    elements.selectionDetails.textContent = t("selectionDistance", {
+      oldDistance: preview.oldDistance,
+      newDistance: preview.newDistance,
+      time: formatDuration(preview.newTime),
+      removedDistance: preview.removedDistance,
+    });
   } else if (preview.selected.length > 0) {
-    elements.selectionTitle.textContent = `${preview.selected.length} выбрано`;
-    elements.selectionDetails.textContent = preview.reason ?? "Измените выбор";
+    elements.selectionTitle.textContent = t("selectionSelected", { count: preview.selected.length });
+    elements.selectionDetails.textContent = preview.reason
+      ? localizeCoreMessage(preview.reason)
+      : t("changeSelection");
   } else {
-    elements.selectionTitle.textContent = "Выберите минимум два отрезка";
-    elements.selectionDetails.textContent = "Они должны идти подряд внутри одного интервала";
+    elements.selectionTitle.textContent = t("selectAtLeastTwo");
+    elements.selectionDetails.textContent = t("adjacentSameInterval");
   }
 }
 
@@ -183,7 +194,7 @@ function renderEditor(): void {
 
 async function loadFile(file: File): Promise<void> {
   if (!file.name.toLowerCase().endsWith(".fit")) {
-    showToast("Выберите файл с расширением .fit", true);
+    showToast(t("errorFitExtension"), true);
     return;
   }
   try {
@@ -196,9 +207,10 @@ async function loadFile(file: File): Promise<void> {
     elements.workspace.hidden = false;
     renderEditor();
     const warnings = fitDocument.decodeErrors.length;
-    showToast(warnings ? `Файл открыт с предупреждениями: ${warnings}` : "FIT-файл успешно открыт");
+    showToast(warnings ? t("fileOpenedWarnings", { count: warnings }) : t("fileOpened"));
   } catch (error) {
-    showToast(error instanceof Error ? error.message : String(error), true);
+    const message = error instanceof Error ? error.message : String(error);
+    showToast(localizeCoreMessage(message), true);
   } finally {
     elements.dropZone.removeAttribute("disabled");
     elements.fileInput.value = "";
@@ -212,6 +224,7 @@ function resetWorkspace(): void {
   history = [];
   elements.workspace.hidden = true;
   elements.emptyState.hidden = false;
+  elements.fileName.textContent = t("defaultFileName");
 }
 
 elements.dropZone.addEventListener("click", () => elements.fileInput.click());
@@ -247,10 +260,11 @@ elements.mergeButton.addEventListener("click", () => {
     mergeLengths(fitDocument, selectedIds);
     selectedIds = new Set();
     renderEditor();
-    showToast(`Объединено. Дистанция уменьшена на ${preview.removedDistance} м.`);
+    showToast(t("mergeSuccess", { distance: preview.removedDistance }));
   } catch (error) {
     history.pop();
-    showToast(error instanceof Error ? error.message : String(error), true);
+    const message = error instanceof Error ? error.message : String(error);
+    showToast(localizeCoreMessage(message), true);
   }
 });
 
@@ -262,7 +276,7 @@ elements.undoButton.addEventListener("click", () => {
   fitDocument.revision = snapshot.revision;
   selectedIds = new Set();
   renderEditor();
-  showToast("Последнее объединение отменено");
+  showToast(t("undoSuccess"));
 });
 
 elements.findSuspicious.addEventListener("click", () => {
@@ -275,12 +289,12 @@ elements.findSuspicious.addEventListener("click", () => {
         selectedIds = new Set([first.id, second.id]);
         renderEditor();
         document.querySelector(`[data-row-id="${first.id}"]`)?.scrollIntoView({ behavior: "smooth", block: "center" });
-        showToast("Выбрана первая подозрительная пара — проверьте и объедините");
+        showToast(t("suspiciousSelected"));
         return;
       }
     }
   }
-  showToast("Явных коротких пар не найдено");
+  showToast(t("noSuspicious"));
 });
 
 elements.exportButton.addEventListener("click", () => {
@@ -289,7 +303,7 @@ elements.exportButton.addEventListener("click", () => {
     const bytes = encodeFit(fitDocument);
     const validation = validateEncoded(bytes);
     if (!validation.ok) {
-      showToast(`Экспорт остановлен: ${validation.errors[0]}`, true);
+      showToast(t("exportStopped", { error: localizeCoreMessage(validation.errors[0]) }), true);
       return;
     }
     const blob = new Blob([bytes as BlobPart], { type: "application/octet-stream" });
@@ -301,9 +315,10 @@ elements.exportButton.addEventListener("click", () => {
     anchor.click();
     anchor.remove();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-    showToast(`Файл проверен и сохранён · ${Math.round(bytes.byteLength / 1024)} КБ`);
+    showToast(t("fileSaved", { size: Math.round(bytes.byteLength / 1024) }));
   } catch (error) {
-    showToast(error instanceof Error ? error.message : String(error), true);
+    const message = error instanceof Error ? error.message : String(error);
+    showToast(localizeCoreMessage(message), true);
   }
 });
 
@@ -313,4 +328,10 @@ window.addEventListener("keydown", (event) => {
     elements.undoButton.click();
   }
   if (event.key === "Escape" && fitDocument && history.length === 0) resetWorkspace();
+});
+
+initializeLanguage(() => {
+  elements.toast.classList.remove("visible");
+  if (fitDocument) renderEditor();
+  else elements.fileName.textContent = t("defaultFileName");
 });

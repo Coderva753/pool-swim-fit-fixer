@@ -1,6 +1,8 @@
 # PoolFix
 
-## ▶ [Try PoolFix online — your FIT file stays in your browser](https://coderva753.github.io/pool-swim-fit-fixer/)
+## ▶ [Try PoolFix online — your FIT file stays in your browser](https://coderva753.github.io/pool-swim-fit-fixer/?lang=en)
+
+[English app](https://coderva753.github.io/pool-swim-fit-fixer/?lang=en) · [Русская версия](https://coderva753.github.io/pool-swim-fit-fixer/?lang=ru)
 
 [English](#english) · [Русский](#русский)
 
@@ -10,7 +12,7 @@ PoolFix is a local, browser-based application for repairing pool-swim activities
 
 ### Usage
 
-1. Open [PoolFix online](https://coderva753.github.io/pool-swim-fit-fixer/).
+1. Open [PoolFix online](https://coderva753.github.io/pool-swim-fit-fixer/?lang=en).
 2. Drop the original `.fit` file into the application.
 3. Select two or more adjacent active lengths within the same interval.
 4. Click **Merge**, verify the corrected distance, and download the repaired FIT file.
@@ -34,7 +36,7 @@ PoolFix — локальное браузерное приложение для 
 
 ### Использование
 
-1. Откройте [PoolFix онлайн](https://coderva753.github.io/pool-swim-fit-fixer/).
+1. Откройте [PoolFix онлайн](https://coderva753.github.io/pool-swim-fit-fixer/?lang=ru).
 2. Перетащите исходный `.fit`-файл в окно приложения.
 3. Выберите два или несколько соседних активных отрезков одного интервала.
 4. Нажмите **«Объединить»**, проверьте исправленную дистанцию и скачайте готовый FIT-файл.

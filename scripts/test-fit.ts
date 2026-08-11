@@ -9,8 +9,10 @@ import {
   validateEncoded,
 } from "../src/fit";
 
-const source = new Uint8Array(readFileSync("23931263419_ACTIVITY.fit"));
-const document = decodeFit(source, "23931263419_ACTIVITY.fit");
+const sourcePath = process.argv[2];
+if (!sourcePath) throw new Error("Usage: pnpm exec tsx scripts/test-fit.ts <activity.fit>");
+const source = new Uint8Array(readFileSync(sourcePath));
+const document = decodeFit(source, sourcePath);
 const initial = buildSwimView(document);
 const initialDistance = initial.session.totalDistance;
 
