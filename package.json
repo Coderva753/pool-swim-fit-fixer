@@ -1,0 +1,21 @@
+{
+  "name": "pool-swim-fit-fixer",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && node scripts/make-single-file.mjs",
+    "preview": "vite preview",
+    "inspect-fit": "node scripts/inspect-fit.mjs"
+  },
+  "dependencies": {
+    "@garmin/fitsdk": "21.208.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0",
+    "vite": "^7.0.0"
+  }
+}

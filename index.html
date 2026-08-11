@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071a2b" />
+    <title>PoolFix — исправление плавательных FIT-файлов</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="PoolFix">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>PoolFix</span>
+        </a>
+        <div class="privacy-note"><span></span> Работает локально · данные никуда не отправляются</div>
+      </header>
+
+      <main>
+        <section id="emptyState" class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">GARMIN POOL SWIM</p>
+            <h1>Верните потерянный<br /><em>разворот</em> на место</h1>
+            <p class="lead">Откройте тренировку, объедините ошибочно разбитые отрезки и скачайте исправленный FIT-файл.</p>
+            <div class="hero-points">
+              <span>Без регистрации</span><span>Без загрузки в облако</span><span>Исходник не меняется</span>
+            </div>
+          </div>
+          <button id="dropZone" class="drop-zone" type="button">
+            <span class="drop-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V14"/></svg>
+            </span>
+            <strong>Перетащите FIT-файл</strong>
+            <span>или нажмите, чтобы выбрать</span>
+            <small>Поддерживаются тренировки Lap Swimming</small>
+          </button>
+        </section>
+
+        <section id="workspace" class="workspace" hidden>
+          <div class="workspace-heading">
+            <div>
+              <button id="openAnotherButton" class="back-button" type="button">← Другой файл</button>
+              <p class="eyebrow">ТЕКУЩАЯ ТРЕНИРОВКА</p>
+              <h1 id="fileName">Тренировка.fit</h1>
+            </div>
+            <div class="workspace-actions">
+              <button id="undoButton" class="button secondary" type="button" disabled>
+                <span aria-hidden="true">↶</span> Отменить
+              </button>
+              <button id="exportButton" class="button primary" type="button">
+                Скачать исправленный FIT
+              </button>
+            </div>
+          </div>
+
+          <div id="summaryCards" class="summary-cards"></div>
+
+          <div class="editor-card">
+            <div class="editor-head">
+              <div>
+                <h2>Отрезки тренировки</h2>
+                <p>Выберите соседние ошибочные части внутри одного интервала.</p>
+              </div>
+              <button id="findSuspiciousButton" class="button ghost" type="button">Найти подозрительные</button>
+            </div>
+
+            <div id="selectionBar" class="selection-bar" aria-live="polite">
+              <div>
+                <strong id="selectionTitle">Выберите минимум два отрезка</strong>
+                <span id="selectionDetails">Они должны идти подряд внутри одного интервала</span>
+              </div>
+              <button id="mergeButton" class="button merge" type="button" disabled>Объединить</button>
+            </div>
+
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="check-column"></th>
+                    <th>Отрезок</th>
+                    <th>Стиль</th>
+                    <th>Время</th>
+                    <th>Темп / 100 м</th>
+                    <th>Гребки</th>
+                    <th>SWOLF</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="lengthRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>PoolFix использует официальный Garmin FIT SDK для чтения, записи и проверки CRC.</footer>
+    </div>
+
+    <input id="fileInput" type="file" accept=".fit,application/octet-stream" hidden />
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
