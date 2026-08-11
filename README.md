@@ -8,6 +8,26 @@ Fix incorrect Garmin pool-swim distance by merging accidentally split lengths. E
 
 [English](#english) · [Русский](#русский)
 
+## How it works / Как это работает
+
+### 1. Find suspicious split lengths / Найдите подозрительные отрезки
+
+PoolFix highlights unusually short adjacent lengths that may be one pool length recorded as two. / PoolFix отмечает соседние короткие отрезки, которые могли быть одной ошибочно разбитой дорожкой.
+
+![PoolFix highlights suspicious short Garmin pool-swim lengths](docs/screenshots/01-find-suspicious-lengths.png)
+
+### 2. Select and merge / Выберите и объедините
+
+Select the adjacent parts, verify the preview, and click **Merge**. / Выберите соседние части, проверьте предварительный результат и нажмите **«Объединить»**.
+
+![Selecting two split lengths and merging them in PoolFix](docs/screenshots/02-select-and-merge.png)
+
+### 3. Verify and download / Проверьте и скачайте
+
+Confirm the corrected distance, then download the repaired FIT file for Garmin Connect. / Проверьте исправленную дистанцию и скачайте готовый FIT-файл для Garmin Connect.
+
+![Corrected Garmin pool-swim distance after merging split lengths](docs/screenshots/03-verify-result.png)
+
 ## English
 
 Use PoolFix when a Garmin pool swim records the wrong distance, adds an extra length, or records one split length as two. The repaired FIT file is validated with the official Garmin FIT SDK before you import it into Garmin Connect.
