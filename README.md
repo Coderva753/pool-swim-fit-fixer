@@ -1,4 +1,6 @@
-# PoolFix
+# PoolFix — Garmin Pool Swim FIT File Fixer
+
+Fix incorrect Garmin pool-swim distance by merging accidentally split lengths. Edit and repair your Garmin swim FIT file locally in the browser — nothing is uploaded.
 
 ## ▶ [Try PoolFix online — your FIT file stays in your browser](https://coderva753.github.io/pool-swim-fit-fixer/?lang=en)
 
@@ -8,7 +10,7 @@
 
 ## English
 
-PoolFix is a local, browser-based application for repairing pool-swim activities where a single pool length was incorrectly split into two or more lengths.
+Use PoolFix when a Garmin pool swim records the wrong distance, adds an extra length, or records one split length as two. The repaired FIT file is validated with the official Garmin FIT SDK before you import it into Garmin Connect.
 
 ### Usage
 

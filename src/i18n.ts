@@ -2,11 +2,12 @@ export type Language = "en" | "ru";
 
 const translations = {
   en: {
-    pageTitle: "PoolFix — repair incorrectly split pool lengths",
+    pageTitle: "PoolFix — Garmin Pool Swim FIT File Fixer",
+    metaDescription: "Fix wrong Garmin pool swim distance, extra lengths, and split lengths. Repair Garmin swim FIT files locally in your browser for Garmin Connect.",
     languageSelector: "Language",
     privacy: "Runs locally · your data never leaves the browser",
-    heroTitle: "Put the lost<br /><em>turn</em> back in place",
-    heroLead: "Open a pool-swim activity, merge incorrectly split lengths, and download the repaired FIT file.",
+    heroTitle: "Fix incorrect Garmin<br /><em>pool-swim distance</em>",
+    heroLead: "Merge accidentally split lengths and repair your Garmin swim FIT file locally in the browser — nothing is uploaded.",
     pointNoRegistration: "No sign-up",
     pointNoCloud: "No cloud upload",
     pointSourceUnchanged: "Original file stays unchanged",
@@ -78,6 +79,7 @@ const translations = {
   },
   ru: {
     pageTitle: "PoolFix — исправление плавательных FIT-файлов",
+    metaDescription: "Исправляйте ошибочную дистанцию Garmin в бассейне, объединяя разбитые отрезки. FIT-файл обрабатывается локально в браузере.",
     languageSelector: "Язык",
     privacy: "Работает локально · данные никуда не отправляются",
     heroTitle: "Верните потерянный<br /><em>разворот</em> на место",
@@ -198,6 +200,8 @@ export function t(key: TranslationKey, values: Record<string, string | number> =
 function applyStaticTranslations(): void {
   document.documentElement.lang = currentLanguage;
   document.title = t("pageTitle");
+  document.querySelector<HTMLMetaElement>('meta[name="description"]')
+    ?.setAttribute("content", t("metaDescription"));
   document.querySelectorAll<HTMLElement>("[data-i18n]").forEach((element) => {
     element.textContent = t(element.dataset.i18n as TranslationKey);
   });
