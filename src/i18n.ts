@@ -31,6 +31,9 @@ const translations = {
     columnPace: "Pace / 100 m",
     columnStrokes: "Strokes",
     footer: "PoolFix uses the official Garmin FIT SDK to read, write, and validate CRC.",
+    contacts: "Contacts",
+    authorOnGitHub: "Author on GitHub",
+    reportProblem: "Report a problem",
     strokeFreestyle: "Freestyle",
     strokeBackstroke: "Backstroke",
     strokeBreaststroke: "Breaststroke",
@@ -82,7 +85,7 @@ const translations = {
     metaDescription: "Исправляйте ошибочную дистанцию Garmin в бассейне, объединяя разбитые отрезки. FIT-файл обрабатывается локально в браузере.",
     languageSelector: "Язык",
     privacy: "Работает локально · данные никуда не отправляются",
-    heroTitle: "Верните потерянный<br /><em>разворот</em> на место",
+    heroTitle: "Исправьте дистанцию<br /><em>тренировки в бассейне</em>",
     heroLead: "Откройте тренировку, объедините ошибочно разбитые отрезки и скачайте исправленный FIT-файл.",
     pointNoRegistration: "Без регистрации",
     pointNoCloud: "Без загрузки в облако",
@@ -107,6 +110,9 @@ const translations = {
     columnPace: "Темп / 100 м",
     columnStrokes: "Гребки",
     footer: "PoolFix использует официальный Garmin FIT SDK для чтения, записи и проверки CRC.",
+    contacts: "Контакты",
+    authorOnGitHub: "Автор на GitHub",
+    reportProblem: "Сообщить о проблеме",
     strokeFreestyle: "Кроль",
     strokeBackstroke: "На спине",
     strokeBreaststroke: "Брасс",
@@ -207,6 +213,9 @@ function applyStaticTranslations(): void {
   });
   document.querySelectorAll<HTMLElement>("[data-i18n-html]").forEach((element) => {
     element.innerHTML = t(element.dataset.i18nHtml as TranslationKey);
+  });
+  document.querySelectorAll<HTMLElement>("[data-i18n-aria-label]").forEach((element) => {
+    element.setAttribute("aria-label", t(element.dataset.i18nAriaLabel as TranslationKey));
   });
 
   const switcher = document.querySelector<HTMLElement>("#languageSwitch");

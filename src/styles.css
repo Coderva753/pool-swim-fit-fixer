@@ -177,7 +177,14 @@ td { height: 55px; padding: 0 16px; border-bottom: 1px solid #e7eeee; font-size:
 .warning-tag { display: inline-flex; align-items: center; gap: 5px; color: #9a641d; background: #ffedcf; border-radius: 8px; padding: 5px 8px; font-size: 10px; font-weight: 700; }
 .warning-tag::before { content: "!"; width: 14px; height: 14px; border: 1px solid #d99338; border-radius: 50%; display: grid; place-items: center; font-size: 9px; }
 
-footer { width: min(1280px, calc(100% - 48px)); margin: 0 auto; padding: 19px 0 23px; color: #85989f; border-top: 1px solid rgba(201,216,218,.7); font-size: 11px; text-align: center; }
+.site-footer { width: min(1280px, calc(100% - 48px)); margin: 0 auto; padding: 18px 0 22px; color: #85989f; border-top: 1px solid rgba(201,216,218,.7); font-size: 11px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.site-footer p { margin: 0; }
+.footer-links { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
+.footer-links a { display: inline-flex; align-items: center; gap: 6px; color: #647c86; font-weight: 650; text-decoration: none; transition: color .15s; }
+.footer-links a:hover { color: var(--aqua-dark); }
+.footer-links a:focus-visible { outline: 2px solid var(--aqua-dark); outline-offset: 4px; border-radius: 3px; }
+.footer-links svg { width: 15px; height: 15px; fill: currentColor; }
+.footer-links a:last-child svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
 .toast { position: fixed; left: 50%; bottom: 28px; z-index: 10; transform: translate(-50%, 20px); max-width: min(520px, calc(100% - 32px)); padding: 13px 18px; border-radius: 12px; background: var(--navy); color: #fff; box-shadow: 0 15px 45px rgba(7,26,43,.25); font-size: 13px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
 .toast.visible { opacity: 1; transform: translate(-50%, 0); }
 .toast.error { background: #813e2e; }
@@ -205,4 +212,6 @@ footer { width: min(1280px, calc(100% - 48px)); margin: 0 auto; padding: 19px 0 
   .editor-head { align-items: flex-start; flex-direction: column; }
   .selection-bar { align-items: stretch; flex-direction: column; }
   .workspace-actions { flex-direction: column-reverse; }
+  .site-footer { align-items: flex-start; flex-direction: column; gap: 13px; }
+  .footer-links { width: 100%; justify-content: space-between; gap: 12px; }
 }
