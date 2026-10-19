@@ -1,6 +1,7 @@
 import "./styles.css";
 import { initializeAnalytics } from "./analytics";
 import { initializeLanguage, localizeCoreMessage, t, type TranslationKey } from "./i18n";
+import { extractFitFromZip } from "./zip";
 import {
   buildSwimView,
   cloneMessages,
@@ -196,14 +197,21 @@ function renderEditor(): void {
 }
 
 async function loadFile(file: File): Promise<void> {
-  if (!file.name.toLowerCase().endsWith(".fit")) {
+  const lowerName = file.name.toLowerCase();
+  if (!lowerName.endsWith(".fit") && !lowerName.endsWith(".zip")) {
     showToast(t("errorFitExtension"), true);
     return;
   }
   try {
     elements.dropZone.setAttribute("disabled", "true");
-    const bytes = new Uint8Array(await file.arrayBuffer());
-    fitDocument = decodeFit(bytes, file.name);
+    let bytes: Uint8Array = new Uint8Array(await file.arrayBuffer());
+    let fileName = file.name;
+    if (lowerName.endsWith(".zip")) {
+      const extracted = await extractFitFromZip(bytes);
+      bytes = extracted.bytes;
+      fileName = extracted.fileName;
+    }
+    fitDocument = decodeFit(bytes, fileName);
     selectedIds = new Set();
     history = [];
     elements.emptyState.hidden = true;
