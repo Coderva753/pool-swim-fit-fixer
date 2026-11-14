@@ -227,6 +227,15 @@ function lapLengths(lap: MutableMesg, lengthsByIndex: Map<number, MutableMesg>):
   return possibleIdle && lengthType(possibleIdle) === "idle" ? [possibleIdle] : [];
 }
 
+function swimStroke(message: MutableMesg): string {
+  return typeof message.swimStroke === "string" ? message.swimStroke : "unknown";
+}
+
+function upperMedian(values: number[]): number {
+  const sorted = [...values].sort((left, right) => left - right);
+  return sorted.length ? sorted[Math.floor(sorted.length / 2)] : 0;
+}
+
 export function buildSwimView(document: FitDocument): SwimView {
   const sessions = document.messages.filter((message) => message.mesgNum === MESG_NUM.session);
   const poolSessions = sessions.filter((message) =>
@@ -249,13 +258,19 @@ export function buildSwimView(document: FitDocument): SwimView {
     .filter((message) => message.mesgNum === MESG_NUM.lap)
     .sort((left, right) => messageIndex(left) - messageIndex(right));
   const lengthsByIndex = new Map(lengths.map((length) => [messageIndex(length), length]));
-  const activeTimes = lengths
-    .filter((length) => lengthType(length) === "active" && numberValue(length, "totalStrokes") > 0)
-    .map((length) => numberValue(length, "totalTimerTime"))
-    .sort((left, right) => left - right);
-  const medianTime = activeTimes.length
-    ? activeTimes[Math.floor(activeTimes.length / 2)]
-    : 0;
+  const activeLengths = lengths.filter((length) =>
+    lengthType(length) === "active" && numberValue(length, "totalStrokes") > 0);
+  const medianTime = upperMedian(activeLengths.map((length) => numberValue(length, "totalTimerTime")));
+  const strokesByStyle = new Map<string, number[]>();
+  for (const length of activeLengths) {
+    const style = swimStroke(length);
+    const strokes = strokesByStyle.get(style) ?? [];
+    strokes.push(numberValue(length, "totalStrokes"));
+    strokesByStyle.set(style, strokes);
+  }
+  const medianStrokesByStyle = new Map(
+    [...strokesByStyle].map(([style, strokes]) => [style, upperMedian(strokes)]),
+  );
 
   const rows: SwimLengthRow[] = [];
   const groups: SwimLapGroup[] = [];
@@ -275,6 +290,10 @@ export function buildSwimView(document: FitDocument): SwimView {
 
     groupLengths.forEach((length, position) => {
       const type = lengthType(length);
+      const time = numberValue(length, "totalTimerTime");
+      const strokes = numberValue(length, "totalStrokes");
+      const stroke = swimStroke(length);
+      const medianStrokes = medianStrokesByStyle.get(stroke) ?? 0;
       const row: SwimLengthRow = {
         id: `length-${messageIndex(length)}`,
         message: length,
@@ -284,13 +303,13 @@ export function buildSwimView(document: FitDocument): SwimView {
         globalPosition: rows.length,
         index: messageIndex(length),
         type,
-        time: numberValue(length, "totalTimerTime"),
-        strokes: numberValue(length, "totalStrokes"),
+        time,
+        strokes,
         cadence: numberValue(length, "avgSwimmingCadence"),
-        stroke: typeof length.swimStroke === "string" ? length.swimStroke : "unknown",
-        suspicious: type === "active" && medianTime > 0
-          && numberValue(length, "totalStrokes") > 0
-          && numberValue(length, "totalTimerTime") < medianTime * 0.72,
+        stroke,
+        suspicious: type === "active" && strokes > 0
+          && ((medianTime > 0 && time < medianTime * 0.72)
+            || (medianStrokes > 0 && strokes < medianStrokes * 0.72)),
       };
       group.rows.push(row);
       rows.push(row);

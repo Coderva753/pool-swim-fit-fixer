@@ -8,7 +8,8 @@
     "build": "tsc && vite build && node scripts/make-single-file.mjs",
     "preview": "vite preview",
     "inspect-fit": "node scripts/inspect-fit.mjs",
-    "test:zip": "tsx scripts/test-zip.ts"
+    "test:zip": "tsx scripts/test-zip.ts",
+    "test:suspicious": "tsx scripts/test-suspicious.ts"
   },
   "dependencies": {
     "@garmin/fitsdk": "21.208.0"

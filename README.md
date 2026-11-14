@@ -23,6 +23,8 @@ All processing happens locally in the browser's memory. The FIT file is not uplo
 
 PoolFix highlights unusually short adjacent lengths that may be one pool length recorded as two.
 
+An active length with a positive stroke count is flagged when its time or stroke count is below 72% of the typical value (upper median). Time is compared across the activity; stroke counts are compared within the same swimming style. Rest and lengths without stroke counts are excluded. **Find suspicious lengths** selects the first adjacent flagged pair within one interval for review.
+
 ![PoolFix highlights suspicious short Garmin pool-swim lengths](docs/screenshots/01-find-suspicious-lengths.png)
 
 #### 2. Select and merge
@@ -68,6 +70,8 @@ To enable optional Cloudflare Web Analytics for the deployed site, create the re
 #### 1. Найдите подозрительные отрезки
 
 PoolFix отмечает соседние короткие отрезки, которые могли быть одной ошибочно разбитой дорожкой.
+
+Активный отрезок с ненулевым числом гребков помечается, если его время или число гребков меньше 72% типичного значения (верхней медианы). Время сравнивается по всей тренировке, а гребки — отдельно для каждого стиля плавания. Отдых и отрезки без данных о гребках исключаются. Кнопка **«Найти подозрительные»** выбирает для проверки первую соседнюю пару помеченных отрезков внутри одного интервала.
 
 ![PoolFix отмечает подозрительные короткие отрезки тренировки Garmin в бассейне](docs/screenshots/01-find-suspicious-lengths.png)
 
