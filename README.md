@@ -8,7 +8,7 @@ Use PoolFix when a Garmin pool swim records the wrong distance, adds an extra le
 
 ### Usage
 
-1. Open [PoolFix online](https://coderva753.github.io/pool-swim-fit-fixer/?lang=en).
+1. Open [PoolFix online](https://deneidos.github.io/pool-swim-fit-fixer/?lang=en).
 2. Drop the original `.fit` file or a Garmin `.zip` export containing one FIT file into the application.
 3. Select two or more adjacent active lengths within the same interval.
 4. Click **Merge**, verify the corrected distance, and download the repaired FIT file.
@@ -56,7 +56,7 @@ To enable optional Cloudflare Web Analytics for the deployed site, create the re
 
 ### Использование
 
-1. Откройте [PoolFix онлайн](https://coderva753.github.io/pool-swim-fit-fixer/?lang=ru).
+1. Откройте [PoolFix онлайн](https://deneidos.github.io/pool-swim-fit-fixer/?lang=ru).
 2. Перетащите исходный `.fit`-файл или экспорт Garmin `.zip` с одним FIT-файлом в окно приложения.
 3. Выберите два или несколько соседних активных отрезков одного интервала.
 4. Нажмите **«Объединить»**, проверьте исправленную дистанцию и скачайте готовый FIT-файл.
